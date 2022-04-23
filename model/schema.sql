@@ -40,13 +40,13 @@ CREATE TABLE tools (
     user_id INT REFERENCES users(user_id) NOT NULL,
     current_status STATUS NOT NULL,
     usage_type USAGE NOT NULL,
-    last_scan TIMESTAMPZ NOT NULL
+    last_scan TIMESTAMPTZ NOT NULL
 );
 --@block
 CREATE TABLE scan_log (
     scan_log_id SERIAL PRIMARY KEY,
     tool_code INT REFERENCES tools(tool_code) NOT NULL,
-    scan_timestamp TIMESTAMPZ NOT NULL DEFAULT(NOW()),
+    scan_timestamp TIMESTAMPTZ NOT NULL DEFAULT(NOW()),
     user_id INT REFERENCES users(user_id),
     current_status STATUS NOT NULL,
     usage_type USAGE NOT NULL,
@@ -54,15 +54,15 @@ CREATE TABLE scan_log (
 );
 --@block
 CREATE TABLE inventory (
-    subtype_id INT REFERENCES tools_subtypes(subtype_id) PRIMARY KEY,
+    subtype_id INT REFERENCES tool_subtypes(subtype_id) PRIMARY KEY,
     available INT CHECK(available >= 0)
 );
 --@block
 CREATE TABLE orders (
     order_id SERIAL PRIMARY KEY,
-    tool_id INT REFERENCES tools(tool_code) NOT NULL,
-    brand_id REFERENCES brands(brand_id) NOT NULL,
+    tool_code INT REFERENCES tools(tool_code) NOT NULL,
+    brand_id INT REFERENCES brands(brand_id) NOT NULL,
     quantity INT CHECK(quantity > 0) NOT NULL,
-    timestamp TIMESTAMPZ NOT NULL,
+    timestamp TIMESTAMPTZ NOT NULL,
     user_id INT REFERENCES users(user_id) NOT NULL
 )
