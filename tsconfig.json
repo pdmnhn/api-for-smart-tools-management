@@ -8,6 +8,10 @@
         "noUnusedParameters": true,
         "noImplicitReturns": true,
         "noFallthroughCasesInSwitch": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "typeRoots": [
+            "./custom_typings",
+            "./node_modules/@types"
+        ]
     }
 }
