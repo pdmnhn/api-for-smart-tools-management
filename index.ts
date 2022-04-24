@@ -1,12 +1,9 @@
-import express from "express";
-import accountRouter from "./src/controllers/account";
+import http from "http";
+import app from "./src/app";
 
-const app = express();
-app.use(express.json());
-
-app.use("/account", accountRouter);
-
+const server = http.createServer(app);
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

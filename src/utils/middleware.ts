@@ -29,6 +29,8 @@ export const userExtractor = (
       const user: unknown = jwt.verify(req.token, process.env.JWT_PRIVATE_KEY);
       if (isUserForToken(user)) {
         req.user = user;
+      } else {
+        req.user = null;
       }
     } catch {
       req.user = null;
