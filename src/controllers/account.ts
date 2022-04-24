@@ -2,6 +2,7 @@ import { Router, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { isString } from "../utils/types";
 import pool from "../database";
+import { DatabaseError } from "pg";
 
 const accountRouter = Router();
 
@@ -22,13 +23,16 @@ accountRouter.post("/signup", async (req: Request, res: Response) => {
   const password_hash = bcrypt.hashSync(password, saltRounds);
   try {
     await pool.query(
-      "INSERT INTO users(email, name, password_hash) VALUES ($1 $2 $3)",
+      "INSERT INTO users(email, name, password_hash) VALUES ($1, $2, $3)",
       [email, name, password_hash]
     );
     res.status(200);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("Error registering the user");
+  } catch (err: unknown) {
+    if (err instanceof DatabaseError) {
+      res.status(400).send({ error: err.detail });
+    } else {
+      res.status(500).send({ error: "Error registering the user" });
+    }
   }
 });
 
