@@ -32,6 +32,7 @@ CREATE TABLE tools (
     tool_code INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     encryption_code VARCHAR(255) UNIQUE NOT NULL,
     subtype_id INT REFERENCES tool_subtypes(subtype_id) NOT NULL,
+    brand_id INT REFERENCES brands(brand_id) NOT NULL,
     rack INT NOT NULL,
     user_id INT REFERENCES users(user_id),
     --user_id = null means the tool is not taken, else it is currently in use
