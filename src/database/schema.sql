@@ -38,12 +38,12 @@ CREATE TABLE tools (
     --user_id = null means the tool is not taken, else it is currently in use
     current_status STATUS NOT NULL,
     usage_type USAGE NOT NULL,
-    last_scan TIMESTAMP NOT NULL
+    last_scan TIMESTAMPTZ NOT NULL
 );
 CREATE TABLE scan_log (
     scan_log_id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     tool_code INT REFERENCES tools(tool_code) NOT NULL,
-    scan_timestamp TIMESTAMP NOT NULL DEFAULT(NOW()),
+    scan_timestamp TIMESTAMPTZ NOT NULL DEFAULT(NOW()),
     user_id INT REFERENCES users(user_id) NOT NULL,
     status STATUS NOT NULL,
     remarks text
@@ -53,6 +53,6 @@ CREATE TABLE orders (
     subtype_id INT REFERENCES tool_subtypes(subtype_id) NOT NULL,
     brand_id INT REFERENCES brands(brand_id) NOT NULL,
     quantity INT CHECK(quantity > 0) NOT NULL,
-    timestamp TIMESTAMP NOT NULL DEFAULT(NOW()),
+    timestamp TIMESTAMPTZ NOT NULL DEFAULT(NOW()),
     user_id INT REFERENCES users(user_id) NOT NULL
 )
