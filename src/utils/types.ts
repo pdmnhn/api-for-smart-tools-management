@@ -1,10 +1,3 @@
-export enum UsageType {
-  Once = "once",
-  Reusable = "reusable",
-}
-
-export type StatusType = "maintenance required" | "good" | "requires repair";
-
 export interface UserType {
   user_id: number;
   email: string;
@@ -31,18 +24,18 @@ export interface FetchedToolsType {
   subtype_name: string;
   brand_name: string;
   category_name: string;
-  usage_type: UsageType;
+  usage_type: string;
   rack: number;
-  current_status: StatusType;
+  current_status: string;
   last_scan: string;
 }
 
 export interface TakeToolType {
   tool_code: number;
   user_id: number;
-  usage_type: UsageType;
+  usage_type: string;
   rack: number;
-  current_status: StatusType;
+  current_status: string;
 }
 
 export interface ReturnToolType {
