@@ -4,7 +4,7 @@ import { Pool } from "pg";
 dotenv();
 
 const pool = new Pool({
-  connectionString: process.env.CONNECTION_STRING,
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
   },
