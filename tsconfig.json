@@ -1,17 +1,14 @@
 {
-    "compilerOptions": {
-        "target": "ES6",
-        "outDir": "./build/",
-        "module": "commonjs",
-        "strict": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "noImplicitReturns": true,
-        "noFallthroughCasesInSwitch": true,
-        "esModuleInterop": true,
-        "typeRoots": [
-            "./custom_typings",
-            "./node_modules/@types"
-        ]
-    }
+  "compilerOptions": {
+    "target": "ES2017",
+    "outDir": "./build/",
+    "module": "commonjs",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "esModuleInterop": true,
+    "typeRoots": ["./custom_typings", "./node_modules/@types"]
+  }
 }

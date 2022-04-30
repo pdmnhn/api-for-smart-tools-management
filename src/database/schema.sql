@@ -46,6 +46,8 @@ CREATE TABLE scan_log (
     scan_timestamp TIMESTAMPTZ NOT NULL DEFAULT(NOW()),
     user_id INT REFERENCES users(user_id) NOT NULL,
     status STATUS NOT NULL,
+    taken BOOLEAN NOT NULL,
+    -- true means, when this record is added the tool is taken else the tool is returned
     remarks text
 );
 CREATE TABLE orders (
