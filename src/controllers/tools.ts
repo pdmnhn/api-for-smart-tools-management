@@ -153,7 +153,10 @@ toolsRouter.post("/return", async (req: Request, res: Response) => {
   } catch (err: unknown) {
     if (err instanceof DatabaseError) {
       res.status(400).send({ error: err.message });
+    } else {
+      res.status(500).end();
     }
+    console.log(err);
   }
 });
 

@@ -34,6 +34,7 @@ accountRouter.post("/signup", async (req: Request, res: Response) => {
     } else {
       res.status(500).send({ error: "Error registering the user" });
     }
+    console.log(err);
   }
 });
 
@@ -69,10 +70,6 @@ accountRouter.post("/signin", async (req, res) => {
     return;
   } else {
     const privateKey = process.env.JWT_PRIVATE_KEY;
-    if (!isString(privateKey)) {
-      res.status(500).send({ error: "Internal server error" });
-      return;
-    }
     const jwtToken = jwt.sign(tokenObject, privateKey);
     res.status(200).send({ token: jwtToken });
     return;
