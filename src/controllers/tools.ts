@@ -148,7 +148,10 @@ toolsRouter.post("/return", async (req: Request, res: Response) => {
     VALUES ($1, $2, $3, false, $4);`,
       [tool_code, user_id, status, remarks]
     );
-    await pool.query(`UPDATE tools SET user_id = null, last_scan = NOW()`);
+    await pool.query(
+      `UPDATE tools SET user_id = null, last_scan = NOW() WHERE tool_code = $1`,
+      [tool_code]
+    );
     res.status(200).json({ rack });
   } catch (err: unknown) {
     if (err instanceof DatabaseError) {
