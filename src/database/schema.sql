@@ -57,4 +57,4 @@ CREATE TABLE orders (
     quantity INT CHECK (quantity > 0) NOT NULL,
     timestamp TIMESTAMPTZ NOT NULL DEFAULT (NOW ()),
     user_id INT REFERENCES users (user_id) NOT NULL
-)
+);
