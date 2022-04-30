@@ -60,5 +60,4 @@ VALUES (
 INSERT INTO scan_log(tool_code, status, taken)
 VALUES(1, 'good', false),
     (2, 'good', false),
-    (3, 'good', false),
-    (4, 'good', false);
+    (3, 'good', false);
