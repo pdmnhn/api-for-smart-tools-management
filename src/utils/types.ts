@@ -32,14 +32,14 @@ export interface FetchedToolsType {
 
 export interface TakeToolType {
   tool_code: number;
-  user_id: number;
+  user_id: number | null;
   usage_type: string;
   rack: number;
   current_status: string;
 }
 
 export interface ReturnToolType {
-  user_id: number;
+  user_id: number | undefined;
   rack: number;
   tool_code: number;
 }

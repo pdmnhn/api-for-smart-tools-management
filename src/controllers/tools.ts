@@ -58,18 +58,17 @@ toolsRouter.post("/take", async (req: Request, res: Response) => {
     return;
   }
 
-  const toolResponse = await pool.query<TakeToolType>(
+  const { rows } = await pool.query<TakeToolType>(
     `SELECT tool_code, user_id, usage_type, rack, current_status FROM tools WHERE encryption_code = $1`,
     [encryption_code]
   );
 
-  if (toolResponse.rows.length != 1) {
+  if (rows.length != 1) {
     res.status(400).send({ error: "Invalid encryption code" });
     return;
   }
 
-  const { tool_code, user_id, usage_type, rack, current_status } =
-    toolResponse.rows[0];
+  const { tool_code, user_id, usage_type, rack, current_status } = rows[0];
 
   if (user_id !== null) {
     res.status(400).send({ error: "The tool is already taken" });
@@ -112,12 +111,21 @@ toolsRouter.post("/return", async (req: Request, res: Response) => {
     return;
   }
 
-  const queryResponse = await pool.query<ReturnToolType>(
+  const { rows } = await pool.query<ReturnToolType>(
     `SELECT tool_code, user_id, rack FROM tools WHERE encryption_code = $1`,
     [encryption_code]
   );
 
-  const { user_id, tool_code, rack } = queryResponse.rows[0];
+  if (rows.length != 1) {
+    res
+      .status(400)
+      .send({ error: "There is no tool with that encryption code" });
+  }
+
+  const row = rows[0];
+  const user_id = row.user_id;
+  const tool_code = row.tool_code;
+  const rack = row.rack;
 
   if (user_id != req.user.user_id) {
     res.status(200).send({ error: "The tool is not taken by the user" });
