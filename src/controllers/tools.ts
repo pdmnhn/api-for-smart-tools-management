@@ -128,7 +128,8 @@ toolsRouter.post("/return", async (req: Request, res: Response) => {
   const rack = row.rack;
 
   if (user_id != req.user.user_id) {
-    res.status(200).send({ error: "The tool is not taken by the user" });
+    res.status(400).send({ error: "The tool is not taken by the user" });
+    return;
   }
 
   const remarksByUser: unknown = req.body.remarks;
