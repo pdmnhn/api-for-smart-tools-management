@@ -136,7 +136,8 @@ toolsRouter.post("/return", async (req: Request, res: Response) => {
   let status: unknown = req.body.status;
 
   if (!isString(status)) {
-    res.status(200).send({ error: "Status of the tool must be included" });
+    res.status(400).send({ error: "Status of the tool must be included" });
+    return;
   } else {
     status = status.toLowerCase();
   }
