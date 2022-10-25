@@ -1,12 +1,10 @@
 import { Router, Request, Response } from "express";
 import { DatabaseError } from "pg";
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import pool from "../database";
 import { isString, UserType, UserTypeForToken } from "../utils/types";
 
 const accountRouter = Router();
-const saltRounds = 10;
 
 accountRouter.post("/signup", async (req: Request, res: Response) => {
   const email: unknown = req.body.email;
@@ -17,11 +15,10 @@ accountRouter.post("/signup", async (req: Request, res: Response) => {
     res.status(400).send({ error: "Invalid or missing values" });
     return;
   }
-  const loginIdHash = bcrypt.hashSync(loginId, saltRounds);
   try {
     await pool.query(
-      "INSERT INTO users(email, name, login_id_hash) VALUES ($1, $2, $3)",
-      [email, name, loginIdHash]
+      "INSERT INTO users(email, name, login_id) VALUES ($1, $2, $3)",
+      [email, name, loginId]
     );
     res.status(200).end();
   } catch (err: unknown) {
@@ -41,12 +38,11 @@ accountRouter.post("/signin", async (req, res) => {
     res.status(400).send({ error: "Invalid or missing values" });
     return;
   }
-  const loginIdHash = bcrypt.hashSync(loginId, saltRounds);
 
   const queryResponse = (
     await pool.query<UserType>(
-      "SELECT user_id, email, login_id_hash FROM users WHERE login_id_hash=$1",
-      [loginIdHash]
+      "SELECT user_id, email, login_id FROM users WHERE login_id=$1",
+      [loginId]
     )
   ).rows;
 
