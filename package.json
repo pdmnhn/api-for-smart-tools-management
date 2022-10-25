@@ -2,7 +2,7 @@
   "engines": {
     "node": "16.14.2"
   },
-  "name": "dbms-project-backend",
+  "name": "smart-inventory-tools-and-asset-tracking-backend",
   "version": "1.0.1",
   "description": "",
   "main": "index.js",
