@@ -35,7 +35,7 @@ accountRouter.post("/signup", async (req: Request, res: Response) => {
 });
 
 accountRouter.post("/signin", async (req, res) => {
-  const loginId: unknown = req.body.password;
+  const loginId: unknown = req.body.loginId;
 
   if (!isString(loginId)) {
     res.status(400).send({ error: "Invalid or missing values" });
