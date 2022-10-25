@@ -6,26 +6,22 @@ import pool from "../database";
 import { isString, UserType, UserTypeForToken } from "../utils/types";
 
 const accountRouter = Router();
+const saltRounds = 10;
 
 accountRouter.post("/signup", async (req: Request, res: Response) => {
   const email: unknown = req.body.email;
-  const password: unknown = req.body.password;
+  const loginId: unknown = req.body.loginId;
   const name: unknown = req.body.name;
 
-  if (!isString(email) || !isString(password) || !isString(name)) {
+  if (!isString(email) || !isString(loginId) || !isString(name)) {
     res.status(400).send({ error: "Invalid or missing values" });
     return;
-  } else if (password.length < 8) {
-    res.status(400).send({ error: "Password must have atleast 8 characters" });
-    return;
   }
-
-  const saltRounds = 10;
-  const passwordHash = bcrypt.hashSync(password, saltRounds);
+  const loginIdHash = bcrypt.hashSync(loginId, saltRounds);
   try {
     await pool.query(
-      "INSERT INTO users(email, name, password_hash) VALUES ($1, $2, $3)",
-      [email, name, passwordHash]
+      "INSERT INTO users(email, name, login_id_hash) VALUES ($1, $2, $3)",
+      [email, name, loginIdHash]
     );
     res.status(200).end();
   } catch (err: unknown) {
@@ -39,18 +35,18 @@ accountRouter.post("/signup", async (req: Request, res: Response) => {
 });
 
 accountRouter.post("/signin", async (req, res) => {
-  const email: unknown = req.body.email;
-  const password: unknown = req.body.password;
+  const loginId: unknown = req.body.password;
 
-  if (!isString(email) || !isString(password)) {
+  if (!isString(loginId)) {
     res.status(400).send({ error: "Invalid or missing values" });
     return;
   }
+  const loginIdHash = bcrypt.hashSync(loginId, saltRounds);
 
   const queryResponse = (
     await pool.query<UserType>(
-      "SELECT user_id, email, password_hash FROM users WHERE email=$1",
-      [email]
+      "SELECT user_id, email, login_id_hash FROM users WHERE login_id_hash=$1",
+      [loginIdHash]
     )
   ).rows;
 
@@ -58,22 +54,15 @@ accountRouter.post("/signin", async (req, res) => {
     res.status(400).send({ error: "User does not exist" });
     return;
   }
-  const passwordHash = queryResponse[0].password_hash;
 
   const tokenObject: UserTypeForToken = {
     user_id: queryResponse[0].user_id,
     email: queryResponse[0].email,
   };
 
-  if (!bcrypt.compareSync(password, passwordHash)) {
-    res.status(401).send({ error: "Invalid password" });
-    return;
-  } else {
-    const privateKey = process.env.JWT_PRIVATE_KEY;
-    const jwtToken = jwt.sign(tokenObject, privateKey);
-    res.status(200).send({ token: jwtToken });
-    return;
-  }
+  const privateKey = process.env.JWT_PRIVATE_KEY;
+  const jwtToken = jwt.sign(tokenObject, privateKey);
+  res.status(200).send({ token: jwtToken });
 });
 
 export default accountRouter;

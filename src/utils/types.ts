@@ -1,10 +1,10 @@
 export interface UserType {
   user_id: number;
   email: string;
-  password_hash: string;
+  login_id_hash: string;
 }
 
-export type UserTypeForToken = Omit<UserType, "password_hash">;
+export type UserTypeForToken = Omit<UserType, "login_id_hash">;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const isUserForToken = (object: any): object is UserTypeForToken => {
