@@ -51,16 +51,16 @@ toolsRouter.post("/take", async (req: Request, res: Response) => {
     res.status(401).send({ error: "User must be logged in" });
     return;
   }
-  const encryption_code: unknown = req.body.encryption_code;
+  const encryptionCode: unknown = req.body.encryptionCode;
 
-  if (!isString(encryption_code)) {
+  if (!isString(encryptionCode)) {
     res.status(400).send({ error: "Encryption code must be provided" });
     return;
   }
 
   const { rows } = await pool.query<TakeToolType>(
     `SELECT tool_code, user_id, usage_type, rack, current_status FROM tools WHERE encryption_code = $1`,
-    [encryption_code]
+    [encryptionCode]
   );
 
   if (rows.length != 1) {
@@ -104,16 +104,16 @@ toolsRouter.post("/return", async (req: Request, res: Response) => {
     return;
   }
 
-  const encryption_code: unknown = req.body.encryption_code;
+  const encryptionCode: unknown = req.body.encryptionCode;
 
-  if (!isString(encryption_code)) {
+  if (!isString(encryptionCode)) {
     res.status(400).send({ error: "Encryption code must be provided" });
     return;
   }
 
   const { rows } = await pool.query<ReturnToolType>(
     `SELECT tool_code, user_id, rack FROM tools WHERE encryption_code = $1`,
-    [encryption_code]
+    [encryptionCode]
   );
 
   if (rows.length != 1) {
