@@ -8,7 +8,7 @@ app.use(express.json());
 
 app.get("/", (_req: Request, res: Response) => {
   res.status(200).json({
-    status: "This application is deployed by EIE students for a DBMS project",
+    status: "Smart Inventory Tools and Asset Tracking",
   });
 });
 
